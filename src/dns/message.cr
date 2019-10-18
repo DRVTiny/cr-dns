@@ -46,8 +46,8 @@ class DNS::Message
 	property recursion_desired : Bool = false
 	property recursion_available : Bool = false
 	property response_code : ResponseCode = ResponseCode::NoError
-	property authenticated : Bool = false
-	property accept_non_auth : Bool = true
+	property authenticated : Bool = true
+	property accept_non_auth : Bool = false
 
 	property questions  : Array(DNS::RR) = [] of DNS::RR
 	property answers	: Array(DNS::RR) = [] of DNS::RR
@@ -145,7 +145,7 @@ class DNS::Message
 		msg.recursion_available = !!(flags & 0x0080 == 0x0080)
 		msg.authenticated = !!(flags & 0x0020 == 0x0020)
 		msg.accept_non_auth = !!(flags & 0x0010 == 0x0010)
-		case flags&0x0F
+		case flags & 0x0F
 			when 0
 				msg.response_code = ResponseCode::NoError
 			when 1
@@ -207,7 +207,7 @@ class DNS::Message
 
 		io.write_network_short(@id)
 		flags = 0_u16
-		flags |= 0x8000 if @query
+		flags |= 0x8000 if @query == Type::Response		
 		flags |= ( @query_type.to_u16 << 11 )
 		flags |= 0x0400 if @authoritative
 		flags |= 0x0200 if @truncated
