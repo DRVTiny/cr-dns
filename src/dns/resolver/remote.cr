@@ -39,7 +39,7 @@ class DNS::Resolver::Remote < DNS::Resolver
 
 		@channel.send_request( msg )
 		puts "waiting for response"
-		res = channel.receive #_with_timeout( 15 )
+		res = channel.receive_with_timeout( 15_f64 )
 		puts "back"
 		@pending_responses[msg.id] = nil
 

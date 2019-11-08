@@ -1,5 +1,3 @@
-require "mergeheapqueue"
-
 class DNS::Cache
 	class CacheEntry
 		enum Type

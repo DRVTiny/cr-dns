@@ -9,12 +9,13 @@ class Array(T)
 		return slice
 	end
 end
+
 class String
 	def to_slice_from_hexstring()
-		byte_count = (self.size+1)/2
-		res = Bytes.new(byte_count,0)
+		byte_count = (self.size + 1) >> 1
+		res = Slice(UInt8).new(byte_count, 0)
 		byte_count.times {|i|
-			res[i] = self[i*2,2].to_i(16).to_u8
+			res[i] = self[i << 1, 2].to_i(16).to_u8
 		}
 		return res
 	end
